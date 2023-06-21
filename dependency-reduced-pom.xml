@@ -4,7 +4,7 @@
   <groupId>org.example</groupId>
   <artifactId>DJLOfflineProblem</artifactId>
   <name>DJLOfflineProblem</name>
-  <version>arm64</version>
+  <version>win</version>
   <build>
     <plugins>
       <plugin>

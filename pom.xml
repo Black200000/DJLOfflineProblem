@@ -6,7 +6,7 @@
 
     <groupId>org.example</groupId>
     <artifactId>DJLOfflineProblem</artifactId>
-    <version>arm64</version>
+    <version>win</version>
     <name>DJLOfflineProblem</name>
 
     <properties>
@@ -16,14 +16,6 @@
     </properties>
 
     <dependencies>
-        <!--arm64-->
-<!--        <dependency>-->
-<!--            <groupId>ai.djl.pytorch</groupId>-->
-<!--            <artifactId>pytorch-native-cpu-precxx11</artifactId>-->
-<!--            <classifier>linux-aarch64</classifier>-->
-<!--            <scope>runtime</scope>-->
-<!--            <version>1.13.1</version>-->
-<!--        </dependency>-->
         <!--windows-->
         <dependency>
             <groupId>ai.djl.pytorch</groupId>
@@ -32,6 +24,14 @@
             <scope>runtime</scope>
             <version>1.13.1</version>
         </dependency>
+        <!--arm64-->
+<!--        <dependency>-->
+<!--            <groupId>ai.djl.pytorch</groupId>-->
+<!--            <artifactId>pytorch-native-cpu-precxx11</artifactId>-->
+<!--            <classifier>linux-aarch64</classifier>-->
+<!--            <scope>runtime</scope>-->
+<!--            <version>1.13.1</version>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>ai.djl.pytorch</groupId>
             <artifactId>pytorch-jni</artifactId>
