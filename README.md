@@ -1,52 +1,34 @@
 # DJLOfflineProblem
 
-离线运行的Arm架构服务器：
+## 如何把所有依赖项都打入jar包中，将jar包部署到离线且无ai.djl缓存文件的机器中？
+我现在只会通过[拷贝ai.djl缓存文件的方式](https://github.com/deepjavalibrary/djl/discussions/2666#discussioncomment-6234140)提前将所需依赖拷贝进离线机器中。
 ```
-CPU: Phytium,D2000/8 E8C
-OS: Linux greatwall-pc 5.4.18-85-generic #74-KYLINOS SMP aarch64 GNU/Linux
+我有两台Win10笔记本电脑A和B，做了如下实验，以下是电脑A和B的信息
+OS: Win10
+java version: "1.8.0_341"
 ```
-运行jar包的报错信息如下，求解答：
 
-# java -jar DJLOfflineProblem-arm64.jar
+``` 
+首先在电脑A上执行如下命令，
+mvn package
+将生成DJLOfflineProblem-win.jar包和model文件夹拷贝到电脑B中
 ```
-Cannot download jni files: https://publish.djl.ai/pytorch/1.13.1/jnilib/0.21.0/linux-aarch64/cpu-precxx11/libdjl_torch.so
+
 ```
-Loading:     100% |████████████████████████████████████████|
-Exception in thread "main" ai.djl.engine.EngineException: Cannot download jni files: https://publish.djl.ai/pytorch/1.13.1/jnilib/0.21.0/linux-aarch64/cpu-precxx11/libdjl_torch.so
+电脑B无网络连接，执行如下运行命令 
+java -jar DJLOfflineProblem-win.jar -Doffline=true
+```
+可以观察到无网络连接的电脑B的 C:\Users\Test 目录下生成.djl.ai文件夹，.djl.ai下包含pytorch\1.13.1-20221220-cpu-win-x86_64子文件夹
+
+报错信息如下
+Loading:     100% |========================================|
+Exception in thread "main" java.lang.reflect.InvocationTargetException
+at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+
+Caused by: ai.djl.engine.EngineException: Cannot download jni files: https://publish.djl.ai/pytorch/1.13.1/jnilib/0.21.0/win-x86_64/cpu/djl_torch.dll
 at ai.djl.pytorch.jni.LibUtils.downloadJniLib(LibUtils.java:507)
 at ai.djl.pytorch.jni.LibUtils.findJniLibrary(LibUtils.java:248)
 at ai.djl.pytorch.jni.LibUtils.loadLibrary(LibUtils.java:80)
-at ai.djl.pytorch.engine.PtEngine.newInstance(PtEngine.java:53)
-at ai.djl.pytorch.engine.PtEngineProvider.getEngine(PtEngineProvider.java:40)
-at ai.djl.engine.Engine.getEngine(Engine.java:187)
-at ai.djl.Model.newInstance(Model.java:99)
-at ai.djl.repository.zoo.BaseModelLoader.createModel(BaseModelLoader.java:191)
-at ai.djl.repository.zoo.BaseModelLoader.loadModel(BaseModelLoader.java:154)
-at ai.djl.repository.zoo.Criteria.loadModel(Criteria.java:172)
-at org.example.Final.main(Final.java:46)
 
-Caused by: java.net.UnknownHostException: publish.djl.ai
-at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:196)
-at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:394)
-at java.net.Socket.connect(Socket.java:606)
-at sun.security.ssl.SSLSocketImpl.connect(SSLSocketImpl.java:303)
-at sun.security.ssl.BaseSSLSocketImpl.connect(BaseSSLSocketImpl.java:173)
-at sun.net.NetworkClient.doConnect(NetworkClient.java:180)
-at sun.net.www.http.HttpClient.openServer(HttpClient.java:499)
-at sun.net.www.http.HttpClient.openServer(HttpClient.java:594)
-at sun.net.www.protocol.https.HttpsClient.<init>(HttpsClient.java:263)
-at sun.net.www.protocol.https.HttpsClient.New(HttpsClient.java:366)
-at sun.net.www.protocol.https.AbstractDelegateHttpsURLConnection.getNewHttpClient(AbstractDelegateHttpsURLConnection.java:207)
-at sun.net.www.protocol.http.HttpURLConnection.plainConnect0(HttpURLConnection.java:1167)
-at sun.net.www.protocol.http.HttpURLConnection.plainConnect(HttpURLConnection.java:1061)
-at sun.net.www.protocol.https.AbstractDelegateHttpsURLConnection.connect(AbstractDelegateHttpsURLConnection.java:193)
-at sun.net.www.protocol.http.HttpURLConnection.getInputStream0(HttpURLConnection.java:1584)
-at sun.net.www.protocol.http.HttpURLConnection.getInputStream(HttpURLConnection.java:1512)
-at sun.net.www.protocol.https.HttpsURLConnectionImpl.getInputStream(HttpsURLConnectionImpl.java:268)
-at java.net.URL.openStream(URL.java:1092)
-at ai.djl.util.Utils.openUrl(Utils.java:461)
-at ai.djl.util.Utils.openUrl(Utils.java:445)
-at ai.djl.pytorch.jni.LibUtils.downloadJniLib(LibUtils.java:501)
-... 10 more
-
-
+我将电脑A中的**1.13.1-20221220-cpu-win-x86_64**文件夹拷贝进电脑B中，电脑B在离线情况下可运行jar包
