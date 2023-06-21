@@ -21,7 +21,9 @@ java -jar DJLOfflineProblem-win.jar -Doffline=true
 可以观察到无网络连接的电脑B的 C:\Users\Test 目录下生成.djl.ai文件夹，.djl.ai下包含pytorch\1.13.1-20221220-cpu-win-x86_64子文件夹
 
 报错信息如下
+```
 Loading:     100% |========================================|
+
 Exception in thread "main" java.lang.reflect.InvocationTargetException
 at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
@@ -31,4 +33,6 @@ at ai.djl.pytorch.jni.LibUtils.downloadJniLib(LibUtils.java:507)
 at ai.djl.pytorch.jni.LibUtils.findJniLibrary(LibUtils.java:248)
 at ai.djl.pytorch.jni.LibUtils.loadLibrary(LibUtils.java:80)
 
+....
+```
 我将电脑A中的**1.13.1-20221220-cpu-win-x86_64**文件夹拷贝进电脑B中，电脑B在离线情况下可运行jar包
